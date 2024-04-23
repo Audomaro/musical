@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d6d2edf-23e2-4d3c-92ab-0539a3d0c347" name="Changes" comment="chore: :zap: update">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/services/TrackServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/services/TrackServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/config/FakeData.java" beforeDir="false" afterPath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/config/FakeData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/controllers/ArtistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/controllers/ArtistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/controllers/TrackController.java" beforeDir="false" afterPath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/controllers/TrackController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/domain/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/domain/Artist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/domain/Track.java" beforeDir="false" afterPath="$PROJECT_DIR$/MusicalTrack/src/main/java/com/expeditors/musicaltrack/domain/Track.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musify.drawio.png" beforeDir="false" afterPath="$PROJECT_DIR$/musify.drawio.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,9 +49,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2fTCkA98AIMOU6P3qSxFIg03pyv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -66,7 +72,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.MusicalTrackApplication.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "zulu-21",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/nld-audomarog/Desktop/musical/MusicalTrack/src/main/java/com/expeditors/musicaltrack/domain",
@@ -126,6 +132,7 @@
       <option name="presentableId" value="Default" />
       <updated>1713815821440</updated>
       <workItem from="1713815822411" duration="9246000" />
+      <workItem from="1713877278172" duration="3336000" />
     </task>
     <task id="LOCAL-00001" summary="chore: :zap: update">
       <option name="closed" value="true" />

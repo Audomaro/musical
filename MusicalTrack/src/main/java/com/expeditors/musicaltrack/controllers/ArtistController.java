@@ -36,7 +36,7 @@ public class ArtistController {
         return ResponseEntity.ok(artist);
     }
 
-    @GetMapping("findByName/{name}")
+    @GetMapping("name/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         List<Artist> artists = service.getArtistByName(name);
 
@@ -81,5 +81,12 @@ public class ArtistController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("summary")
+    public ResponseEntity<?> getSummary() {
+        return ResponseEntity.status(HttpStatus.OK).body(new Object(){
+            public int total = service.getAll().size();
+        });
     }
 }

@@ -30,7 +30,19 @@ public record Artist(
         );
     }
 
-
+    public Artist(int id) {
+        this(
+                id,
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.music().genre(),
+                faker.address().country(),
+                faker.lorem().paragraph(),
+                faker.internet().url(),
+                new String[] {faker.internet().url(), faker.internet().url()},
+                faker.bool().bool()
+        );
+    }
 
     public String fullName() {
         return this.firstName() + " " + this.lastName();

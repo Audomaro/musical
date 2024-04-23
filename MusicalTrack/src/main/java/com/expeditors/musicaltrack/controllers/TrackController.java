@@ -93,4 +93,15 @@ public class TrackController {
     public List<Track> getByDuration(@PathVariable DurationTrack durationTrack, @PathVariable int seconds) {
         return this.service.getTrackByDuration(durationTrack, seconds);
     }
+
+    @GetMapping("summary")
+    public ResponseEntity<?> getSummary() {
+        return ResponseEntity.status(HttpStatus.OK).body(new Object(){
+            public int track = service.getAll().size();
+            public int mp3 = service.getTrackByMediaType(MediaType.mp3).size();
+            public int ogg = service.getTrackByMediaType(MediaType.ogg).size();
+            public int flac = service.getTrackByMediaType(MediaType.flac).size();
+            public int wav = service.getTrackByMediaType(MediaType.wav).size();
+        });
+    }
 }

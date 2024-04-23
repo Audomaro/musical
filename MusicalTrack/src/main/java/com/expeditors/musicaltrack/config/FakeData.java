@@ -24,22 +24,22 @@ public class FakeData implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
         Random rand = new Random();
 
-        for (int i = 0; i < 10; i++) {
-            this.artistService.insert(new Artist());
+        int topArtist = rand.nextInt(100,200);
+        int topTrack = rand.nextInt(50,400);
+
+        for (int idAuto = 1; idAuto <= topArtist; idAuto++) {
+            this.artistService.insert(new Artist(idAuto));
         }
 
         List<Artist> artists = this.artistService.getAll();
-        int topNumTrack = rand.nextInt(50);
 
-        for (int i = 0; i < topNumTrack; i++) {
-            Collections.shuffle(artists);
+        for (int idAuto = 1; idAuto <= topTrack; idAuto++) {
             Collections.shuffle(artists);
             List<Artist> artistsSelected = artists.subList(0, rand.nextInt(1,3));
             List<Integer> ids = artistsSelected.stream().map(Artist::id).toList();
-            this.trackService.insert(new Track(ids));
+            this.trackService.insert(new Track(idAuto,ids));
         }
     }
 }
