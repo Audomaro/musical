@@ -39,32 +39,32 @@ public class TrackController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Track newModel) {
+    public ResponseEntity<?> postArtist(@RequestBody Track newModel) {
         Track newAdopter = service.insert(newModel);
 
         URI newResource = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(newAdopter.id())
+                .buildAndExpand(newAdopter.getId())
                 .toUri();
 
         return ResponseEntity.created(newResource).build();
     }
 
     @PutMapping
-    public ResponseEntity<?> updateStudent(@RequestBody Track update) {
-        boolean result = service.update(update.id(),update);
+    public ResponseEntity<?> updateArtist(@RequestBody Track update) {
+        boolean result = service.update(update.getId(),update);
 
         if(!result) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No track with id: " + update.id());
+                    .body("No track with id: " + update.getId());
         }
 
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<?> deleteArtist(@PathVariable int id) {
         boolean result = service.delete(id);
 
         if(!result) {
@@ -97,11 +97,11 @@ public class TrackController {
     @GetMapping("summary")
     public ResponseEntity<?> getSummary() {
         return ResponseEntity.status(HttpStatus.OK).body(new Object(){
-            public int track = service.getAll().size();
-            public int mp3 = service.getTrackByMediaType(MediaType.mp3).size();
-            public int ogg = service.getTrackByMediaType(MediaType.ogg).size();
-            public int flac = service.getTrackByMediaType(MediaType.flac).size();
-            public int wav = service.getTrackByMediaType(MediaType.wav).size();
+            public final int track = service.getAll().size();
+            public final int mp3 = service.getTrackByMediaType(MediaType.mp3).size();
+            public final int ogg = service.getTrackByMediaType(MediaType.ogg).size();
+            public final int flac = service.getTrackByMediaType(MediaType.flac).size();
+            public final int wav = service.getTrackByMediaType(MediaType.wav).size();
         });
     }
 }

@@ -44,19 +44,19 @@ public class TrackServiceImpl implements TrackService{
 
     @Override
     public List<Track> getTrackByMediaType(MediaType mediaType) {
-        Predicate<Track> comparator = track -> track.mediaType() == mediaType;
+        Predicate<Track> comparator = track -> track.getMediaType() == mediaType;
         return this.repository.getBy(comparator);
     }
 
     @Override
     public List<Track> getTrackByYear(int year) {
-        Predicate<Track> comparator = track -> track.issueDate().getYear() == year;
+        Predicate<Track> comparator = track -> track.getIssueDate().getYear() == year;
         return this.repository.getBy(comparator);
     }
 
     @Override
     public List<Track> getTrackByArtist(int idArtist) {
-        Predicate<Track> comparator = track -> track.idsArtist()
+        Predicate<Track> comparator = track -> track.getIdsArtist()
                                                     .stream()
                                                     .anyMatch(ids -> ids == idArtist);
         return this.repository.getBy(comparator);
@@ -66,9 +66,9 @@ public class TrackServiceImpl implements TrackService{
     public List<Track> getTrackByDuration(DurationTrack durationTrack, int seconds) {
 
         Predicate<Track> comparator = switch (durationTrack) {
-            case shorted -> (track -> track.duration() < seconds);
-            case longer -> (track -> track.duration() > seconds);
-            default -> (track -> track.duration() == seconds);
+            case shorted -> (track -> track.getDuration() < seconds);
+            case longer -> (track -> track.getDuration() > seconds);
+            default -> (track -> track.getDuration() == seconds);
         };
 
         return this.repository.getBy(comparator);

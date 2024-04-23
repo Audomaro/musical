@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-@Component
+//@Component
 public class FakeData implements CommandLineRunner {
     final
     ArtistService artistService;
@@ -38,7 +38,7 @@ public class FakeData implements CommandLineRunner {
         for (int idAuto = 1; idAuto <= topTrack; idAuto++) {
             Collections.shuffle(artists);
             List<Artist> artistsSelected = artists.subList(0, rand.nextInt(1,3));
-            List<Integer> ids = artistsSelected.stream().map(Artist::id).toList();
+            List<Integer> ids = artistsSelected.stream().map(Artist::getId).toList();
             this.trackService.insert(new Track(idAuto,ids));
         }
     }

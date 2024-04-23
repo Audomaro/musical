@@ -43,7 +43,7 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public List<Artist> getArtistByName(String name) {
-        Predicate<Artist> comparator = track -> track.fullName().contains(name);
-        return this.repository.getBy(comparator);
+        Predicate<Artist> predicate = track -> track.getFullName().contains(name);
+        return this.repository.getBy(predicate);
     }
 }

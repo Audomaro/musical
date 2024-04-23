@@ -48,32 +48,32 @@ public class ArtistController {
     }
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Artist newModel) {
+    public ResponseEntity<?> postArtist(@RequestBody Artist newModel) {
         Artist newArtist = service.insert(newModel);
 
         URI newResource = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(newArtist.id())
+                .buildAndExpand(newArtist.getId())
                 .toUri();
 
         return ResponseEntity.created(newResource).build();
     }
 
     @PutMapping
-    public ResponseEntity<?> put(@RequestBody Artist update) {
-        boolean result = service.update(update.id(),update);
+    public ResponseEntity<?> putArtist(@RequestBody Artist update) {
+        boolean result = service.update(update.getId(),update);
 
         if(!result) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No artist with id: " + update.id());
+                    .body("No artist with id: " + update.getId());
         }
 
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<?> deleteArtist(@PathVariable int id) {
         boolean result = service.delete(id);
 
         if(!result) {
@@ -86,7 +86,7 @@ public class ArtistController {
     @GetMapping("summary")
     public ResponseEntity<?> getSummary() {
         return ResponseEntity.status(HttpStatus.OK).body(new Object(){
-            public int total = service.getAll().size();
+            public final int total = service.getAll().size();
         });
     }
 }

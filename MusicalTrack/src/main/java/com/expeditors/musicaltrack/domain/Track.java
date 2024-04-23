@@ -1,67 +1,43 @@
 package com.expeditors.musicaltrack.domain;
 
 import com.github.javafaker.Faker;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public record Track(
-        int id,
-        String title,
-        String album,
-        List<Integer> idsArtist,
-        LocalDate issueDate,
-        int duration,
-        MediaType mediaType
-) {
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Track {
+    private int id;
+    private String title;
+    private String album;
+    private List<Integer> idsArtist;
+    private LocalDate issueDate;
+    private int duration;
+    private MediaType mediaType;
     private static final Faker faker = new Faker();
 
-    public Track() {
-        this(
-                faker.number().numberBetween(1, 999),
-                faker.funnyName().name(),
-                faker.funnyName().name(),
-                new ArrayList<>(),
-                Track.randomAdoptionDate(),
-                faker.number().numberBetween(60,600),
-                MediaType.getRandomMediaType()
-        );
-    }
-
-    public Track(int id, List<Integer> idArtist) {
+    public Track(int id, List<Integer> idsArtist) {
         this(
                 id,
                 faker.funnyName().name(),
                 faker.funnyName().name(),
                 new ArrayList<>(),
-                Track.randomAdoptionDate(),
-                faker.number().numberBetween(60,600),
+                randomAdoptionDate(),
+                faker.number().numberBetween(60, 600),
                 MediaType.getRandomMediaType()
         );
 
-        this.idsArtist.addAll(idArtist);
+        this.idsArtist.addAll(idsArtist);
     }
 
-    public Track(List<Integer> idArtist) {
-        this(
-                faker.number().numberBetween(1, 999),
-                faker.funnyName().name(),
-                faker.funnyName().name(),
-                new ArrayList<>(),
-                Track.randomAdoptionDate(),
-                faker.number().numberBetween(60,600),
-                MediaType.getRandomMediaType()
-        );
-
-        this.idsArtist.addAll(idArtist);
-    }
-
-
-    public static  LocalDate randomAdoptionDate() {
+    public static LocalDate randomAdoptionDate() {
         Random random = new Random();
         int minDay = (int) LocalDate.of(2018, 1, 1).toEpochDay();
         int maxDay = (int) LocalDate.now().toEpochDay();

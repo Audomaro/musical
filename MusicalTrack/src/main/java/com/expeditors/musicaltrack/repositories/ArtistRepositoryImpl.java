@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Repository
 public class ArtistRepositoryImpl implements ArtistRepository {
     private final Map<Integer, Artist> listData;
+    private static int nextId = 0;
 
     public ArtistRepositoryImpl() {
         this.listData = new ConcurrentHashMap<>();
@@ -30,7 +31,9 @@ public class ArtistRepositoryImpl implements ArtistRepository {
 
     @Override
     public Artist insert(Artist model) {
-        this.listData.put(model.id(), model);
+        int newId = nextId++;
+        model.setId(newId);
+        this.listData.put(newId, model);
         return model;
     }
 
