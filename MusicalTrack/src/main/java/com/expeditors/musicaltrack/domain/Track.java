@@ -37,6 +37,10 @@ public class Track {
         this.idsArtist.addAll(idsArtist);
     }
 
+    public Track(String title, String album, List<Integer> idsArtist, LocalDate issueDate, int duration, MediaType mediaType) {
+        this(0, title, album, idsArtist, issueDate, duration, mediaType);
+    }
+
     public static LocalDate randomAdoptionDate() {
         Random random = new Random();
         int minDay = (int) LocalDate.of(2018, 1, 1).toEpochDay();

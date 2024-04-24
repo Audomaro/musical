@@ -2,6 +2,7 @@ package com.expeditors.musicaltrack.controllers;
 
 import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.services.ArtistService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,7 +87,7 @@ public class ArtistController {
     @GetMapping("summary")
     public ResponseEntity<?> getSummary() {
         return ResponseEntity.status(HttpStatus.OK).body(new Object(){
-            public final int total = service.getAll().size();
+            public final int artists = service.getAll().size();
         });
     }
 }

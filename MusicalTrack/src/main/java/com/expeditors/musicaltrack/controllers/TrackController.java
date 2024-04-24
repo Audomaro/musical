@@ -85,7 +85,7 @@ public class TrackController {
     }
 
     @GetMapping("artist/{idArtist}")
-    public List<Track> getByMediaType(@PathVariable int idArtist) {
+    public List<Track> getByArtist(@PathVariable int idArtist) {
         return this.service.getTrackByArtist(idArtist);
     }
 
@@ -97,7 +97,7 @@ public class TrackController {
     @GetMapping("summary")
     public ResponseEntity<?> getSummary() {
         return ResponseEntity.status(HttpStatus.OK).body(new Object(){
-            public final int track = service.getAll().size();
+            public final int tracks = service.getAll().size();
             public final int mp3 = service.getTrackByMediaType(MediaType.mp3).size();
             public final int ogg = service.getTrackByMediaType(MediaType.ogg).size();
             public final int flac = service.getTrackByMediaType(MediaType.flac).size();

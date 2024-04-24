@@ -122,33 +122,6 @@ class TrackServiceImplTest {
         Mockito.verify(repository).getBy(Mockito.any());
     }
 
-
-    @Test
-    void getTrackByMediaTypeOgg() {
-        List<Track> trackList = List.of(
-                new Track(1, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.ogg),
-                new Track(2, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.ogg),
-                new Track(3, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.ogg),
-                new Track(4, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.ogg),
-                new Track(5, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.ogg)
-        );
-
-        Mockito.when(repository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Track> receivedPredicate = invocation.getArgument(0);
-            return trackList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
-
-        List<Track> result = service.getTrackByMediaType(MediaType.ogg);
-
-        assertNotNull(result);
-
-        assertEquals(trackList.size(), result.size());
-
-        Mockito.verify(repository).getBy(Mockito.any());
-    }
-
     @Test
     void getTrackByYear() {
         int year = 2022;

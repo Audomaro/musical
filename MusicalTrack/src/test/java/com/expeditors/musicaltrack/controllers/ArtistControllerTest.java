@@ -87,6 +87,8 @@ class ArtistControllerTest {
                 new Artist(42, "Jonh D", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
         );
 
+        String jsonString = objectMapper.writeValueAsString(artists);
+
         Mockito.when(artistService.getArtistByName(artistName)).thenReturn(artists);
 
         this.mockMvc.perform(
@@ -95,7 +97,7 @@ class ArtistControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(artists.size())))
-                .andExpect(jsonPath("$[*].firstName").value(hasItem(containsString(artistName))))
+                .andExpect(content().json(jsonString))
                 .andDo(print());
 
         Mockito.verify(artistService).getArtistByName(artistName);
@@ -171,7 +173,7 @@ class ArtistControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total").value(artists.size()))
+                .andExpect(jsonPath("$.artists").value(artists.size()))
                 .andDo(print());
 
         Mockito.verify(artistService).getAll();
