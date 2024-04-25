@@ -113,9 +113,9 @@ class TrackServiceImplTest {
     @Test
     void getTrackByMediaType() {
         List<Track> trackList = List.of(
-                new Track(1, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.mp3),
-                new Track(3, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.mp3),
-                new Track(4, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.mp3)
+                new Track(1, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.mp3,0),
+                new Track(3, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.mp3,0),
+                new Track(4, "A", "X", List.of(1, 2, 3), LocalDate.now(), 300, MediaType.mp3,0)
                 );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
@@ -134,10 +134,10 @@ class TrackServiceImplTest {
         int year = 2022;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 250, MediaType.mp3),
-                new Track(1, "Song B", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 330, MediaType.flac),
-                new Track(1, "Song C", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 410, MediaType.mp3),
-                new Track(1, "Song D", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 100, MediaType.ogg)
+                new Track(1, "Song A", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 250, MediaType.mp3,0),
+                new Track(1, "Song B", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 330, MediaType.flac,0),
+                new Track(1, "Song C", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 410, MediaType.mp3,0),
+                new Track(1, "Song D", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 100, MediaType.ogg,0)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
@@ -156,9 +156,9 @@ class TrackServiceImplTest {
         int secondsDuration = 200;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
-                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
-                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg)
+                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3,0),
+                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3,0),
+                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg,0)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
@@ -182,9 +182,9 @@ class TrackServiceImplTest {
         int secondsDuration = 200;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 220, MediaType.mp3),
-                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 280, MediaType.mp3),
-                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 260, MediaType.ogg)
+                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 220, MediaType.mp3,0),
+                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 280, MediaType.mp3,0),
+                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 260, MediaType.ogg,0)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
@@ -204,9 +204,9 @@ class TrackServiceImplTest {
         int secondsDuration = 300;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 300, MediaType.mp3),
-                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 300, MediaType.mp3),
-                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 300, MediaType.ogg)
+                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 300, MediaType.mp3,0),
+                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 300, MediaType.mp3,0),
+                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 300, MediaType.ogg,0)
                 );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);

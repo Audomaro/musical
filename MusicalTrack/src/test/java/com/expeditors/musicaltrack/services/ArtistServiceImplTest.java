@@ -129,9 +129,9 @@ class ArtistServiceImplTest {
         int idArtist = 155;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(idArtist,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
-                new Track(2, "Song C", "Album C", List.of(idArtist,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
-                new Track(3, "Song D", "Album D", List.of(idArtist,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg)
+                new Track(1, "Song A", "Album A", List.of(idArtist,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3,0),
+                new Track(2, "Song C", "Album C", List.of(idArtist,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3,0),
+                new Track(3, "Song D", "Album D", List.of(idArtist,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg,0)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);

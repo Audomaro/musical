@@ -19,21 +19,15 @@ public class Artist {
     private static final Faker faker = new Faker();
 
     public Artist(int id) {
-        this(
-                id,
-                faker.name().firstName(),
-                faker.name().lastName(),
-                faker.music().genre(),
-                faker.address().country(),
-                faker.lorem().paragraph(),
-                faker.internet().url(),
-                new String[]{faker.internet().url(), faker.internet().url()},
-                faker.bool().bool()
-        );
-    }
-
-    public Artist(String firstName, String lastName, String genre, String country, String biography, String website, String[] socialMediaLinks, boolean active) {
-        this(0, firstName, lastName, genre, country, biography, website, socialMediaLinks, active);
+        this.setId(id);
+        this.setFirstName(faker.name().firstName());
+        this.setLastName(faker.name().lastName());
+        this.setGenre(faker.music().genre());
+        this.setCountry(faker.address().country());
+        this.setBiography(faker.lorem().paragraph());
+        this.setWebsite(faker.internet().url());
+        this.setSocialMediaLinks(new String[]{faker.internet().url(), faker.internet().url()});
+        this.setActive(faker.bool().bool());
     }
 
     public String getFullName() {

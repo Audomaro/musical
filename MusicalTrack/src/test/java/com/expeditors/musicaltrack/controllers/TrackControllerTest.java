@@ -37,9 +37,9 @@ class TrackControllerTest {
     @Test
     void getAll() throws Exception {
         List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(1, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(3, "Song C", "Album C", List.of(2, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3)
+                new Track(1, "Song A", "Album A", List.of(1, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(2, "Song B", "Album B", List.of(1, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(3, "Song C", "Album C", List.of(2, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0)
         );
 
         String jsonString = objectMapper.writeValueAsString(tracks);
@@ -59,7 +59,7 @@ class TrackControllerTest {
 
     @Test
     void getById() throws Exception {
-        Track track = new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3);
+        Track track = new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0);
 
         Mockito.when(trackService.getById(1)).thenReturn(track);
 
@@ -96,7 +96,7 @@ class TrackControllerTest {
 
     @Test
     void postArtist() throws Exception {
-        Track track = new Track("Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3);
+        Track track = new Track(1,"Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3, 0);
 
         track.setId(33);
 
@@ -118,7 +118,7 @@ class TrackControllerTest {
 
     @Test
     void updateArtist() throws Exception {
-        Track track = new Track(35,"Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3);
+        Track track = new Track(35,"Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0);
         String trackJson = objectMapper.writeValueAsString(track);
 
         Mockito.when(trackService.update(track.getId(), track)).thenReturn(true);
@@ -136,7 +136,7 @@ class TrackControllerTest {
 
     @Test
     void updateArtistNotFound() throws Exception {
-        Track track = new Track(35,"Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3);
+        Track track = new Track(35,"Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0);
         String trackJson = objectMapper.writeValueAsString(track);
 
         Mockito.when(trackService.update(track.getId(), track)).thenReturn(false);
@@ -190,10 +190,10 @@ class TrackControllerTest {
         com.expeditors.musicaltrack.domain.MediaType mediaType = com.expeditors.musicaltrack.domain.MediaType.mp3;
 
         List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.of(2022,1,1), 600, mediaType),
-                new Track(2, "Song B", "Album B", List.of(1,2,3), LocalDate.of(2021,1,1), 600, mediaType ),
-                new Track(3, "Song C", "Album C", List.of(1,2,3), LocalDate.of(2023,1,1), 600, mediaType),
-                new Track(4, "Song D", "Album D", List.of(1,2,3), LocalDate.of(2023,1,1), 600, mediaType )
+                new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.of(2022,1,1), 600, mediaType,0),
+                new Track(2, "Song B", "Album B", List.of(1,2,3), LocalDate.of(2021,1,1), 600, mediaType,0),
+                new Track(3, "Song C", "Album C", List.of(1,2,3), LocalDate.of(2023,1,1), 600, mediaType,0),
+                new Track(4, "Song D", "Album D", List.of(1,2,3), LocalDate.of(2023,1,1), 600, mediaType,0)
         );
 
         String jsonString = objectMapper.writeValueAsString(tracks);
@@ -216,10 +216,10 @@ class TrackControllerTest {
         int year = 2022;
 
         List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.ogg ),
-                new Track(3, "Song C", "Album C", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.wav),
-                new Track(4, "Song D", "Album D", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.flac )
+                new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(2, "Song B", "Album B", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.ogg,0),
+                new Track(3, "Song C", "Album C", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.wav,0),
+                new Track(4, "Song D", "Album D", List.of(1,2,3), LocalDate.of(year,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.flac,0)
         );
 
         String jsonString = objectMapper.writeValueAsString(tracks);
@@ -243,10 +243,10 @@ class TrackControllerTest {
         int seconds = 200;
 
         List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.of(2018,1,1), 180, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1,2,3), LocalDate.of(2022,1,1), 60, com.expeditors.musicaltrack.domain.MediaType.ogg ),
-                new Track(3, "Song C", "Album C", List.of(1,2,3), LocalDate.of(2024,1,1), 120, com.expeditors.musicaltrack.domain.MediaType.wav),
-                new Track(4, "Song D", "Album D", List.of(1,2,3), LocalDate.of(2021,1,1), 150, com.expeditors.musicaltrack.domain.MediaType.flac )
+                new Track(1, "Song A", "Album A", List.of(1,2,3), LocalDate.of(2018,1,1), 180, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(2, "Song B", "Album B", List.of(1,2,3), LocalDate.of(2022,1,1), 60, com.expeditors.musicaltrack.domain.MediaType.ogg,0),
+                new Track(3, "Song C", "Album C", List.of(1,2,3), LocalDate.of(2024,1,1), 120, com.expeditors.musicaltrack.domain.MediaType.wav,0),
+                new Track(4, "Song D", "Album D", List.of(1,2,3), LocalDate.of(2021,1,1), 150, com.expeditors.musicaltrack.domain.MediaType.flac,0)
         );
 
         String jsonString = objectMapper.writeValueAsString(tracks);

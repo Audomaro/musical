@@ -141,7 +141,7 @@ class ArtistControllerTest {
 
     @Test
     void postArtist() throws Exception {
-        Artist artist = new Artist("Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
+        Artist artist = new Artist(1,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
         artist.setId(100);
 
         String artistJson = objectMapper.writeValueAsString(artist);
@@ -232,9 +232,9 @@ class ArtistControllerTest {
         int idArtist = 100;
 
         List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(idArtist, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(3, "Song C", "Album C", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3)
+                new Track(1, "Song A", "Album A", List.of(idArtist, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(2, "Song B", "Album B", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(3, "Song C", "Album C", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0)
         );
 
         String jsonString = objectMapper.writeValueAsString(tracks);

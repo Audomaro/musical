@@ -19,22 +19,18 @@ public class Track {
     private LocalDate issueDate;
     private int duration;
     private MediaType mediaType;
+    private double price;
+
     private static final Faker faker = new Faker();
 
     public Track( List<Integer> idsArtist) {
-        this(
-                0,
-                faker.funnyName().name(),
-                faker.funnyName().name(),
-                idsArtist,
-                randomAdoptionDate(),
-                faker.number().numberBetween(60, 600),
-                MediaType.getRandomMediaType()
-        );
-    }
-
-    public Track(String title, String album, List<Integer> idsArtist, LocalDate issueDate, int duration, MediaType mediaType) {
-        this(0, title, album, idsArtist, issueDate, duration, mediaType);
+        this.setTitle(faker.funnyName().name());
+        this.setAlbum(faker.funnyName().name());
+        this.setIdsArtist(idsArtist);
+        this.setIssueDate(randomAdoptionDate());
+        this.setDuration(faker.number().numberBetween(60, 600));
+        this.setMediaType(MediaType.getRandomMediaType());
+        this.setPrice(faker.number().randomDouble(2, 1,2));
     }
 
     public static LocalDate randomAdoptionDate() {
