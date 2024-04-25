@@ -8,6 +8,7 @@ class MusicalPricingApplicationTests {
 
     @Test
     void contextLoads() {
+        MusicalPricingApplication.main(new String[] {});
     }
 
 }

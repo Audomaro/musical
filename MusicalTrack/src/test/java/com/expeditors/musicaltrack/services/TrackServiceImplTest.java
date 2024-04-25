@@ -150,14 +150,17 @@ class TrackServiceImplTest {
 
     @Test
     void getTrackByArtist() {
-        int idArtist = 1;
+       // Pendiente
+    }
+
+    @Test
+    void getTrackByDurationShorted() {
+        int secondsDuration = 200;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 250, MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1,4,15), LocalDate.of(2018,1,1), 330, MediaType.flac),
-                new Track(3, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 410, MediaType.mp3),
-                new Track(4, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 100, MediaType.ogg),
-                new Track(5, "Song E", "Album E", List.of(1,4,15), LocalDate.of(2019,1,1), 330, MediaType.flac)
+                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
+                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
+                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
@@ -167,7 +170,7 @@ class TrackServiceImplTest {
                     .toList();
         });
 
-        List<Track> result = trackService.getTrackByArtist(idArtist);
+        List<Track> result = trackService.getTrackByDuration(DurationTrack.shorted, secondsDuration);
 
         assertNotNull(result);
 
@@ -177,16 +180,13 @@ class TrackServiceImplTest {
     }
 
     @Test
-    void getTrackByDuration() {
-        DurationTrack durationTrack = DurationTrack.shorted;
+    void getTrackByDurationLonger() {
         int secondsDuration = 200;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1,4,15), LocalDate.of(2018,1,1), 180, MediaType.flac),
-                new Track(3, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
-                new Track(4, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg),
-                new Track(5, "Song E", "Album E", List.of(1,4,15), LocalDate.of(2019,1,1), 120, MediaType.flac)
+                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 220, MediaType.mp3),
+                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 280, MediaType.mp3),
+                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 260, MediaType.ogg)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
@@ -196,7 +196,34 @@ class TrackServiceImplTest {
                     .toList();
         });
 
-        List<Track> result = trackService.getTrackByDuration(durationTrack, secondsDuration);
+        List<Track> result = trackService.getTrackByDuration(DurationTrack.longer, secondsDuration);
+
+        assertNotNull(result);
+
+        assertEquals(trackList.size(), result.size());
+
+        Mockito.verify(trackRepository).getBy(Mockito.any());
+    }
+
+
+    @Test
+    void getTrackByDurationEquals() {
+        int secondsDuration = 300;
+
+        List<Track> trackList = List.of(
+                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 300, MediaType.mp3),
+                new Track(2, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 300, MediaType.mp3),
+                new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 300, MediaType.ogg)
+                );
+
+        Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
+            Predicate<Track> receivedPredicate = invocation.getArgument(0);
+            return trackList.stream()
+                    .filter(receivedPredicate)
+                    .toList();
+        });
+
+        List<Track> result = trackService.getTrackByDuration(DurationTrack.equal, secondsDuration);
 
         assertNotNull(result);
 

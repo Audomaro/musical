@@ -8,6 +8,7 @@ class MusicalTrackApplicationTests {
 
     @Test
     void contextLoads() {
+        MusicalTrackApplication.main(new String[] {});
     }
 
 }

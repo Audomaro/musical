@@ -28,13 +28,11 @@ public class Track {
                 id,
                 faker.funnyName().name(),
                 faker.funnyName().name(),
-                new ArrayList<>(),
+                idsArtist,
                 randomAdoptionDate(),
                 faker.number().numberBetween(60, 600),
                 MediaType.getRandomMediaType()
         );
-
-        this.idsArtist.addAll(idsArtist);
     }
 
     public Track(String title, String album, List<Integer> idsArtist, LocalDate issueDate, int duration, MediaType mediaType) {
@@ -49,4 +47,3 @@ public class Track {
         return LocalDate.ofEpochDay(randomDay);
     }
 }
-

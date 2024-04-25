@@ -1,126 +1,96 @@
 package com.expeditors.musicaltrack.repositories;
 
-import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TrackRepositoryImplTest {
 
-    @Mock
-    private TrackRepositoryImpl trackRepository;
+    @Autowired
+    private TrackRepository trackRepository;
 
+    @Test
     void getAll() {
-        List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1,4,15), LocalDate.of(2018,1,1), 180, MediaType.mp3),
-                new Track(3, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
-                new Track(4, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 60, MediaType.mp3),
-                new Track(5, "Song E", "Album E", List.of(1,4,15), LocalDate.of(2019,1,1), 120, MediaType.mp3)
-        );
+        Track track1 = new Track();
+        Track track2 = new Track();
 
-        Mockito.when(trackRepository.getAll()).thenReturn(trackList);
+        trackRepository.insert(track1);
+        trackRepository.insert(track2);
 
-        List<Track> tracks = trackRepository.getAll();
-
-        assertNotNull(tracks);
-
-        assertEquals(trackList.size(), tracks.size());
-
-        Mockito.verify(trackRepository).getAll();
+        List<Track> allTracks = trackRepository.getAll();
+        assertEquals(2, allTracks.size());
+        assertTrue(allTracks.contains(track1));
+        assertTrue(allTracks.contains(track2));
     }
 
     @Test
     void getById() {
-        Track track = new Track(1, List.of(1, 2));
+        assertNull(trackRepository.getById(1));
 
-        Mockito.when(trackRepository.getById(track.getId())).thenReturn(track);
+        Track track = new Track();
 
-        Track result = trackRepository.getById(1);
+        trackRepository.insert(track);
 
-        assertNotNull(result);
-
-        assertEquals(track.getId(), result.getId());
-
-        Mockito.verify(trackRepository).getById(1);
+        assertEquals(track, trackRepository.getById(track.getId()));
     }
 
     @Test
     void insert() {
-        Track track = new Track(1, List.of(1, 2));
+        Track track = new Track();
 
-        Mockito.when(trackRepository.insert(track)).thenReturn(track);
+        trackRepository.insert(track);
 
-        Track result = trackRepository.insert(track);
-
-        assertNotNull(result);
-
-        assertEquals(track.getId(), result.getId());
-
-        Mockito.verify(trackRepository).insert(track);
+        assertEquals(track, trackRepository.getById(track.getId()));
     }
 
     @Test
     void update() {
-        Track track = new Track(1, List.of(1, 2));
+        List<Integer> ids = List.of(6,7,8);
+        Track track = new Track();
 
-        Mockito.when(trackRepository.update(track.getId(), track)).thenReturn(true);
+        trackRepository.insert(track);
 
-        boolean result = trackRepository.update(track.getId(), track);
+        track.setIdsArtist(ids);
 
-        assertTrue(result);
+        assertTrue(trackRepository.update(track.getId(), track));
 
-        Mockito.verify(trackRepository).update(1, track);
+        assertEquals(ids, trackRepository.getById(track.getId()).getIdsArtist());
     }
 
     @Test
     void delete() {
-        Track track = new Track(1, List.of(1, 2));
+        Track track = new Track();
 
-        Mockito.when(trackRepository.delete(track.getId())).thenReturn(true);
+        trackRepository.insert(track);
 
-        boolean result = trackRepository.delete(track.getId());
+        assertTrue(trackRepository.delete(track.getId()));
 
-        assertTrue(result);
-
-        Mockito.verify(trackRepository).delete(track.getId());
+        assertNull(trackRepository.getById(track.getId()));
     }
 
     @Test
     void getBy() {
-        MediaType mediaType = MediaType.mp3;
+        int idArtist = 1;
+        Track track1 = new Track();
+        track1.setIdsArtist(List.of(idArtist,2,3));
+        Track track2 = new Track();
+        track2.setIdsArtist(List.of(idArtist,4,53));
+        Track track3 = new Track();
+        track3.setIdsArtist(List.of(idArtist,62,23));
 
-        List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(1,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(1,4,15), LocalDate.of(2018,1,1), 180, MediaType.mp3),
-                new Track(3, "Song C", "Album C", List.of(1,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
-                new Track(4, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 60, MediaType.mp3),
-                new Track(5, "Song E", "Album E", List.of(1,4,15), LocalDate.of(2019,1,1), 120, MediaType.mp3)
-        );
+        trackRepository.insert(track1);
+        trackRepository.insert(track2);
+        trackRepository.insert(track3);
 
-        Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Track> receivedPredicate = invocation.getArgument(0);
-            return trackList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
-
-        Predicate<Track> predicate = t -> t.getMediaType() == mediaType;
-
-        List<Track> result = trackRepository.getBy(predicate);
-
-        assertEquals(trackList, result);
-
-        Mockito.verify(trackRepository).getBy(Mockito.any());
+        List<Track> filteredTracks = trackRepository.getBy(track -> track.getIdsArtist().contains(idArtist));
+        assertEquals(3, filteredTracks.size());
     }
 }

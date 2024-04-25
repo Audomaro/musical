@@ -1,5 +1,6 @@
 package com.expeditors.musicaltrack.controllers;
 
+import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.DurationTrack;
 import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
@@ -84,9 +85,9 @@ public class TrackController {
         return this.service.getTrackByYear(year);
     }
 
-    @GetMapping("artist/{idArtist}")
-    public List<Track> getByArtist(@PathVariable int idArtist) {
-        return this.service.getTrackByArtist(idArtist);
+    @GetMapping("artists/{idArtist}")
+    public List<Artist> getByArtist(@PathVariable int idArtist) {
+        return this.service.getArtistsByTrack(idArtist);
     }
 
     @GetMapping("duration/{durationTrack}/{seconds}")

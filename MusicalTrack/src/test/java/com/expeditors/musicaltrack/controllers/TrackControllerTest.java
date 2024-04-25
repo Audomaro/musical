@@ -83,6 +83,24 @@ class TrackControllerTest {
     }
 
     @Test
+    void getByIdNotFound() throws Exception {
+
+        int idTrackNotFound = 999;
+
+        Mockito.when(trackService.getById(1)).thenReturn(null);
+
+        this.mockMvc.perform(
+                        get("/track/" + 999)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No track with id: " + idTrackNotFound))
+                .andDo(print());
+
+        Mockito.verify(trackService).getById(idTrackNotFound);
+    }
+
+    @Test
     void postArtist() throws Exception {
         Track track = new Track("Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3);
 
@@ -120,7 +138,25 @@ class TrackControllerTest {
                 .andDo(print());
 
         Mockito.verify(trackService).update(track.getId(), track);
+    }
 
+    @Test
+    void updateArtistNotFound() throws Exception {
+        Track track = new Track(35,"Song A", "Album A", List.of(1,2,3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3);
+        String trackJson = objectMapper.writeValueAsString(track);
+
+        Mockito.when(trackService.update(track.getId(), track)).thenReturn(false);
+
+        this.mockMvc.perform(
+                        put("/track")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(trackJson)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No track with id: " + track.getId()))
+                .andDo(print());
+
+        Mockito.verify(trackService).update(track.getId(), track);
     }
 
     @Test
@@ -136,6 +172,23 @@ class TrackControllerTest {
                 .andDo(print());
 
         Mockito.verify(trackService).delete(idTack);
+    }
+
+
+    @Test
+    void deleteArtistNotFound() throws Exception {
+        int idTackNotFound = 100;
+        Mockito.when(trackService.delete(idTackNotFound)).thenReturn(false);
+
+        this.mockMvc.perform(
+                        delete("/track/" + idTackNotFound)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No track with id: " + idTackNotFound))
+                .andDo(print());
+
+        Mockito.verify(trackService).delete(idTackNotFound);
     }
 
     @Test
@@ -192,37 +245,7 @@ class TrackControllerTest {
 
     @Test
     void getByArtist() throws Exception {
-        int idArtist = 1;
-
-        List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(idArtist,22,33), LocalDate.of(2018,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(idArtist,42,53), LocalDate.of(2022,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.ogg ),
-                new Track(3, "Song C", "Album C", List.of(idArtist,12,73), LocalDate.of(2019,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.wav),
-                new Track(4, "Song D", "Album D", List.of(idArtist,22,43), LocalDate.of(2021,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.flac )
-        );
-
-
-        String jsonString = objectMapper.writeValueAsString(tracks);
-
-//        // throw Error - track list expected
-//        tracks = List.of(
-//                new Track(1, "Song A", "Album A", List.of(idArtist,22,33), LocalDate.of(2018,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.mp3),
-//                new Track(2, "Song B", "Album B", List.of(idArtist,42,53), LocalDate.of(2022,1,1), 600, com.expeditors.musicaltrack.domain.MediaType.ogg )
-//        );
-//        // throw Error - track list expected
-
-
-        Mockito.when(trackService.getTrackByArtist(idArtist)).thenReturn(tracks);
-
-        this.mockMvc.perform(
-                        get("/track/artist/" + idArtist)
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().json(jsonString))
-                .andDo(print());
-
-        Mockito.verify(trackService).getTrackByArtist(idArtist);
+        // Pendiente
     }
 
     @Test

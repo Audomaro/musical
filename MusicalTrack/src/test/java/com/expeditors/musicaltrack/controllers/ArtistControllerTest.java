@@ -77,6 +77,23 @@ class ArtistControllerTest {
     }
 
     @Test
+    void getByIdNotFound() throws Exception {
+        int idArtistNotFound = 123;
+
+        Mockito.when(artistService.getById(idArtistNotFound)).thenReturn(null);
+
+        this.mockMvc.perform(
+                        get("/artist/" + idArtistNotFound)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No artist with id: " + idArtistNotFound))
+                .andDo(print());
+
+        Mockito.verify(artistService).getById(idArtistNotFound);
+    }
+
+    @Test
     void getByName() throws Exception {
         String artistName = "Jonh";
 
@@ -98,6 +115,23 @@ class ArtistControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(artists.size())))
                 .andExpect(content().json(jsonString))
+                .andDo(print());
+
+        Mockito.verify(artistService).getArtistByName(artistName);
+    }
+
+    @Test
+    void getByNameNotFound() throws Exception {
+        String artistName = "Joe";
+
+        Mockito.when(artistService.getArtistByName(artistName)).thenReturn(null);
+
+        this.mockMvc.perform(
+                        get("/artist/name/" + artistName)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No artist with name: " + artistName))
                 .andDo(print());
 
         Mockito.verify(artistService).getArtistByName(artistName);
@@ -128,14 +162,15 @@ class ArtistControllerTest {
         Artist artist = new Artist(100,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
         String artistJson = objectMapper.writeValueAsString(artist);
 
-        Mockito.when(artistService.update(artist.getId(), artist)).thenReturn(true);
+        Mockito.when(artistService.update(artist.getId(), artist)).thenReturn(false);
 
         this.mockMvc.perform(
                         put("/artist")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(artistJson)
                 )
-                .andExpect(status().isNoContent())
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No artist witg id: " + artist.getId() ))
                 .andDo(print());
 
         Mockito.verify(artistService).update(artist.getId(), artist);
@@ -143,17 +178,18 @@ class ArtistControllerTest {
 
     @Test
     void deleteArtist() throws Exception {
-        int idArtist = 100;
-        Mockito.when(artistService.delete(idArtist)).thenReturn(true);
+        int idArtistNotFound = 100;
+        Mockito.when(artistService.delete(idArtistNotFound)).thenReturn(false);
 
         this.mockMvc.perform(
-                        delete("/artist/" + idArtist)
+                        delete("/artist/" + idArtistNotFound)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isNoContent())
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No artist with id: " + idArtistNotFound))
                 .andDo(print());
 
-        Mockito.verify(artistService).delete(idArtist);
+        Mockito.verify(artistService).delete(idArtistNotFound);
     }
 
     @Test

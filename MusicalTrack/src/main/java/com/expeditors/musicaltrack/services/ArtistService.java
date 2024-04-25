@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ArtistService extends ServiceBase<Artist> {
     List<Artist> getArtistByName(String name);
+
+    List<Track> getTracksByArtist(int idArtist);
 }

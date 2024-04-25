@@ -1,117 +1,97 @@
 package com.expeditors.musicaltrack.repositories;
 
-
 import com.expeditors.musicaltrack.domain.Artist;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ArtistRepositoryImplTest {
-    @Mock
-    private ArtistRepositoryImpl artistRepository;
+
+    @Autowired
+    private ArtistRepository artistRepository;
 
     @Test
-    public void getAll() {
-        List<Artist> artistList = List.of(
-                new Artist(1),
-                new Artist(2),
-                new Artist(3),
-                new Artist(4)
-        );
+    void getAll() {
+        Artist artist1 = new Artist();
+        Artist artist2 = new Artist();
 
-        Mockito.when(artistRepository.getAll()).thenReturn(artistList);
+        artistRepository.insert(artist1);
+        artistRepository.insert(artist2);
 
-        List<Artist> result = artistRepository.getAll();
-
-        assertEquals(artistList,result);
-
-        Mockito.verify(artistRepository).getAll();
+        List<Artist> allArtists = artistRepository.getAll();
+        assertEquals(2, allArtists.size());
+        assertTrue(allArtists.contains(artist1));
+        assertTrue(allArtists.contains(artist2));
     }
 
     @Test
     void getById() {
-        Artist artist = new Artist(1);
+        assertNull(artistRepository.getById(1));
 
-        Mockito.when(artistRepository.getById(1)).thenReturn(artist);
+        Artist artist = new Artist();
 
-        Artist result = artistRepository.getById(1);
+        artistRepository.insert(artist);
 
-        assertEquals(artist, result);
-
-        Mockito.verify(artistRepository).getById(1);
+        assertEquals(artist, artistRepository.getById(artist.getId()));
     }
 
     @Test
     void insert() {
-        Artist newArtist = new Artist(1);
+        Artist artist = new Artist();
 
-        Mockito.when(artistRepository.insert(newArtist)).thenReturn(newArtist);
+        artistRepository.insert(artist);
 
-        Artist result = artistRepository.insert(newArtist);
-
-        assertEquals(newArtist.getId(), result.getId());
-
-        Mockito.verify(artistRepository).insert(newArtist);
+        assertEquals(artist, artistRepository.getById(artist.getId()));
     }
 
     @Test
     void update() {
-        Artist upadateArtist = new Artist(1, "Jonh", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
+        String artistName = "Joe";
+        Artist artist = new Artist();
 
-        Mockito.when(artistRepository.update(1, upadateArtist)).thenReturn(true);
+        artistRepository.insert(artist);
 
-        boolean result = artistRepository.update(1, upadateArtist);
+        artist.setFirstName(artistName);
 
-        assertTrue(result);
+        assertTrue(artistRepository.update(artist.getId(), artist));
 
-        Mockito.verify(artistRepository).update(1, upadateArtist);
+        assertEquals(artistName, artistRepository.getById(artist.getId()).getFirstName());
     }
 
     @Test
     void delete() {
-        int deleteArtistId = 1;
+        Artist artist = new Artist();
 
-        Mockito.when(artistRepository.delete(deleteArtistId)).thenReturn(true);
+        artistRepository.insert(artist);
 
-        boolean result = artistRepository.delete(deleteArtistId);
+        assertTrue(artistRepository.delete(artist.getId()));
 
-        assertTrue(result);
-
-        Mockito.verify(artistRepository).delete(deleteArtistId);
+        assertNull(artistRepository.getById(artist.getId()));
     }
 
     @Test
-    void getArtistByName() {
-        String artistName = "Jonh";
+    void getBy() {
+        Artist artist1 = new Artist();
+        artist1.setFirstName("Joe");
 
-        List<Artist> artistList = List.of(
-                new Artist(12, "Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
-                new Artist(22, "Jonh O", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
-                new Artist(32, "Jonh V", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
-                new Artist(42, "Jonh D", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
-        );
+        Artist artist2 = new Artist();
+        artist2.setFirstName("Joe");
 
-        Mockito.when(artistRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Artist> receivedPredicate = invocation.getArgument(0);
-            return artistList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
+        Artist artist3 = new Artist();
+        artist3.setFirstName("Joe");
 
-        Predicate<Artist> predicate = t -> t.getFullName().contains(artistName);
+        artistRepository.insert(artist1);
+        artistRepository.insert(artist2);
+        artistRepository.insert(artist3);
 
-        List<Artist> result = artistRepository.getBy(predicate);
-
-        assertEquals(artistList, result);
-
-        Mockito.verify(artistRepository).getBy(Mockito.any());
+        List<Artist> filteredArtists = artistRepository.getBy(artist -> artist.getFullName().contains("Joe"));
+        assertEquals(3, filteredArtists.size());
     }
 }

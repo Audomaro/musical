@@ -33,7 +33,7 @@ public class TrackRepositoryImpl implements TrackRepository {
     public Track insert(Track model) {
         int newId = nextId++;
         model.setId(newId);
-        this.listData.put(nextId, model);
+        this.listData.put(newId, model);
         return model;
     }
 

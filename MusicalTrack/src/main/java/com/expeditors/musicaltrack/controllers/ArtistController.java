@@ -1,6 +1,7 @@
 package com.expeditors.musicaltrack.controllers;
 
 import com.expeditors.musicaltrack.domain.Artist;
+import com.expeditors.musicaltrack.domain.Track;
 import com.expeditors.musicaltrack.services.ArtistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ArtistController {
         Artist artist = service.getById(id);
 
         if (artist == null) {
-            return ResponseEntity.status(HttpStatus.OK).body("No artist with id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No artist with id: " + id);
         }
 
         return ResponseEntity.ok(artist);
@@ -41,7 +42,7 @@ public class ArtistController {
         List<Artist> artists = service.getArtistByName(name);
 
         if (artists == null) {
-            return ResponseEntity.status(HttpStatus.OK).body("No artist with name: " + name);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No artist with name: " + name);
         }
 
         return ResponseEntity.ok(artists);
@@ -65,8 +66,7 @@ public class ArtistController {
         boolean result = service.update(update.getId(),update);
 
         if(!result) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No artist with id: " + update.getId());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No artist with id: " + update.getId());
         }
 
         return ResponseEntity.noContent().build();
@@ -81,6 +81,11 @@ public class ArtistController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("tracks/{idArtist}")
+    public List<Track> getTracks(@PathVariable int idArtist) {
+        return this.service.getTracksByArtist(idArtist);
     }
 
     @GetMapping("summary")
