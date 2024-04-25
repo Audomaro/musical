@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class TrackServiceImpl implements TrackService{
@@ -63,34 +64,27 @@ public class TrackServiceImpl implements TrackService{
 
     @Override
     public List<Artist> getArtistsByTrack(int idTrack) {
-        Predicate<Track> predicate = track -> track.getId() == idTrack;
+        Set<Integer> result = new HashSet<>(
+                trackRepository
+                        .getBy(track -> track.getId() == idTrack)
+                        .stream()
+                        .map(Track::getIdsArtist)
+                        .findFirst()
+                        .orElse(Collections.emptyList())
+        );
 
-        List<Integer> result = trackRepository
-                                .getBy(predicate)
-                                .stream()
-                                .map(Track::getIdsArtist)
-                                .findFirst()
-                                .orElse(null);
-
-        if (result == null) {
-            result = Collections.emptyList();
-        }
-
-        Set<Integer> finalResult = new HashSet<>(result);
-        Predicate<Artist> artistPredicate = artist -> finalResult.contains(artist.getId());
-
-        return this.artistRepository.getBy(artistPredicate);
+        return this.artistRepository.getBy(artist -> result.contains(artist.getId()));
     }
 
     @Override
     public List<Track> getTrackByDuration(DurationTrack durationTrack, int seconds) {
 
-        Predicate<Track> comparator = switch (durationTrack) {
+        Predicate<Track> predicate = switch (durationTrack) {
             case shorted -> (track -> track.getDuration() < seconds);
             case longer -> (track -> track.getDuration() > seconds);
             default -> (track -> track.getDuration() == seconds);
         };
 
-        return this.trackRepository.getBy(comparator);
+        return this.trackRepository.getBy(predicate);
     }
 }

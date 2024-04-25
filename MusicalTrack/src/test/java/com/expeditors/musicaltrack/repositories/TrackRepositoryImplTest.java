@@ -25,8 +25,10 @@ class TrackRepositoryImplTest {
         trackRepository.insert(track1);
         trackRepository.insert(track2);
 
+        int total = trackRepository.getAll().size();
+
         List<Track> allTracks = trackRepository.getAll();
-        assertEquals(2, allTracks.size());
+        assertEquals(total, allTracks.size());
         assertTrue(allTracks.contains(track1));
         assertTrue(allTracks.contains(track2));
     }

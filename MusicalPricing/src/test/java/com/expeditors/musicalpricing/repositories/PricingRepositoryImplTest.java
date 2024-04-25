@@ -1,28 +1,20 @@
 package com.expeditors.musicalpricing.repositories;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class PricingRepositoryImplTest {
 
-    @Mock
+    @Autowired
     private PricingRepositoryImpl pricingRepository;
 
     @Test
     void getPrice() {
-        double price = 1.75;
-
-        Mockito.when(pricingRepository.getPrice(1)).thenReturn(price);
-
         double result = pricingRepository.getPrice(1);
-        assertEquals(price, result);
-
-        Mockito.verify(pricingRepository).getPrice(1);
+        assertTrue(result > 0);
     }
 }

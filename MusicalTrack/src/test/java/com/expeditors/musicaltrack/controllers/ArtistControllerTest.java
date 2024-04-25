@@ -1,6 +1,7 @@
 package com.expeditors.musicaltrack.controllers;
 
 import com.expeditors.musicaltrack.domain.Artist;
+import com.expeditors.musicaltrack.domain.Track;
 import com.expeditors.musicaltrack.services.ArtistServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -162,6 +164,24 @@ class ArtistControllerTest {
         Artist artist = new Artist(100,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
         String artistJson = objectMapper.writeValueAsString(artist);
 
+        Mockito.when(artistService.update(artist.getId(), artist)).thenReturn(true);
+
+        this.mockMvc.perform(
+                        put("/artist")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(artistJson)
+                )
+                .andExpect(status().isNoContent())
+                .andDo(print());
+
+        Mockito.verify(artistService).update(artist.getId(), artist);
+    }
+
+    @Test
+    void putArtistNotFound() throws Exception {
+        Artist artist = new Artist(100,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
+        String artistJson = objectMapper.writeValueAsString(artist);
+
         Mockito.when(artistService.update(artist.getId(), artist)).thenReturn(false);
 
         this.mockMvc.perform(
@@ -170,7 +190,7 @@ class ArtistControllerTest {
                                 .content(artistJson)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("No artist witg id: " + artist.getId() ))
+                .andExpect(content().string("No artist with id: " + artist.getId() ))
                 .andDo(print());
 
         Mockito.verify(artistService).update(artist.getId(), artist);
@@ -178,6 +198,21 @@ class ArtistControllerTest {
 
     @Test
     void deleteArtist() throws Exception {
+        int idArtistNotFound = 100;
+        Mockito.when(artistService.delete(idArtistNotFound)).thenReturn(true);
+
+        this.mockMvc.perform(
+                        delete("/artist/" + idArtistNotFound)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent())
+                .andDo(print());
+
+        Mockito.verify(artistService).delete(idArtistNotFound);
+    }
+
+    @Test
+    void deleteArtistNotFound() throws Exception {
         int idArtistNotFound = 100;
         Mockito.when(artistService.delete(idArtistNotFound)).thenReturn(false);
 
@@ -190,6 +225,31 @@ class ArtistControllerTest {
                 .andDo(print());
 
         Mockito.verify(artistService).delete(idArtistNotFound);
+    }
+
+    @Test
+    void getTracksByArtist() throws Exception {
+        int idArtist = 100;
+
+        List<Track> tracks = List.of(
+                new Track(1, "Song A", "Album A", List.of(idArtist, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
+                new Track(2, "Song B", "Album B", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
+                new Track(3, "Song C", "Album C", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3)
+        );
+
+        String jsonString = objectMapper.writeValueAsString(tracks);
+
+        Mockito.when(artistService.getTracksByArtist(idArtist)).thenReturn(tracks);
+
+        this.mockMvc.perform(
+                        get("/artist/tracks/" + idArtist)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonString))
+                .andDo(print());
+
+        Mockito.verify(artistService).getTracksByArtist(idArtist);
     }
 
     @Test

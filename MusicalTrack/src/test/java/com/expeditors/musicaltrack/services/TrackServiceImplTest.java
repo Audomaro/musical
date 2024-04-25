@@ -1,8 +1,10 @@
 package com.expeditors.musicaltrack.services;
 
+import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.DurationTrack;
 import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
+import com.expeditors.musicaltrack.repositories.ArtistRepository;
 import com.expeditors.musicaltrack.repositories.TrackRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +14,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,16 +28,19 @@ class TrackServiceImplTest {
     @Mock
     private TrackRepository trackRepository;
 
+    @Mock
+    private ArtistRepository artistRepository;
+
     @InjectMocks
     private TrackServiceImpl trackService;
 
     @Test
     void getAll() {
         List<Track> trackList = List.of(
-                new Track(1, List.of(1, 2)),
-                new Track(2, List.of(1, 2)),
-                new Track(3, List.of(1, 2)),
-                new Track(4, List.of(1, 2))
+                new Track(List.of(1, 2)),
+                new Track(List.of(1, 2)),
+                new Track(List.of(1, 2)),
+                new Track(List.of(1, 2))
         );
 
         Mockito.when(trackRepository.getAll()).thenReturn(trackList);
@@ -48,7 +56,8 @@ class TrackServiceImplTest {
 
     @Test
     void getById() {
-        Track track = new Track(1, List.of(1, 2));
+        Track track = new Track(List.of(1, 2));
+        track.setId(1);
 
         Mockito.when(trackRepository.getById(track.getId())).thenReturn(track);
 
@@ -63,7 +72,7 @@ class TrackServiceImplTest {
 
     @Test
     void insert() {
-        Track track = new Track(1, List.of(1, 2));
+        Track track = new Track(List.of(1, 2));
 
         Mockito.when(trackRepository.insert(track)).thenReturn(track);
 
@@ -78,7 +87,8 @@ class TrackServiceImplTest {
 
     @Test
     void update() {
-        Track track = new Track(1, List.of(1, 2));
+        Track track = new Track(List.of(1, 2));
+        track.setId(1);
 
         Mockito.when(trackRepository.update(track.getId(), track)).thenReturn(true);
 
@@ -91,7 +101,7 @@ class TrackServiceImplTest {
 
     @Test
     void delete() {
-        Track track = new Track(1, List.of(1, 2));
+        Track track = new Track(List.of(1, 2));
 
         Mockito.when(trackRepository.delete(track.getId())).thenReturn(true);
 
@@ -132,12 +142,7 @@ class TrackServiceImplTest {
                 new Track(1, "Song D", "X", List.of(1,2,3), LocalDate.of(2022,1,1), 100, MediaType.ogg)
         );
 
-        Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Track> receivedPredicate = invocation.getArgument(0);
-            return trackList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
+        Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
 
         List<Track> result = trackService.getTrackByYear(year);
 
@@ -146,11 +151,6 @@ class TrackServiceImplTest {
         assertEquals(trackList.size(), result.size());
 
         Mockito.verify(trackRepository).getBy(Mockito.any());
-    }
-
-    @Test
-    void getTrackByArtist() {
-       // Pendiente
     }
 
     @Test
@@ -189,12 +189,7 @@ class TrackServiceImplTest {
                 new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 260, MediaType.ogg)
         );
 
-        Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Track> receivedPredicate = invocation.getArgument(0);
-            return trackList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
+        Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
 
         List<Track> result = trackService.getTrackByDuration(DurationTrack.longer, secondsDuration);
 
@@ -216,18 +211,44 @@ class TrackServiceImplTest {
                 new Track(3, "Song D", "Album D", List.of(21,92,1), LocalDate.of(2022,1,1), 300, MediaType.ogg)
                 );
 
-        Mockito.when(trackRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Track> receivedPredicate = invocation.getArgument(0);
-            return trackList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
+        Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
 
         List<Track> result = trackService.getTrackByDuration(DurationTrack.equal, secondsDuration);
 
         assertNotNull(result);
 
         assertEquals(trackList.size(), result.size());
+
+        Mockito.verify(trackRepository).getBy(Mockito.any());
+    }
+
+    @Test
+    void getArtistsByTrack() {
+        int idTrack = 1;
+
+        List<Artist> artistList = List.of(
+                new Artist(12, "John A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(22, "John O", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
+        );
+
+        Mockito.when(artistRepository.getBy(Mockito.any())).thenReturn(artistList);
+
+        List<Artist> result = trackService.getArtistsByTrack(idTrack);
+
+        assertEquals(artistList, result);
+
+        Mockito.verify(trackRepository).getBy(Mockito.any());
+    }
+
+    @Test
+    void getArtistsByTrackNull() {
+        int idTrack = 1;
+
+        Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(Collections.emptyList());
+
+        List<Artist> result = trackService.getArtistsByTrack(idTrack);
+
+        assertEquals(Collections.emptyList(), result);
 
         Mockito.verify(trackRepository).getBy(Mockito.any());
     }

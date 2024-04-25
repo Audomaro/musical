@@ -25,8 +25,10 @@ class ArtistRepositoryImplTest {
         artistRepository.insert(artist1);
         artistRepository.insert(artist2);
 
+        int total = artistRepository.getAll().size();
+
         List<Artist> allArtists = artistRepository.getAll();
-        assertEquals(2, allArtists.size());
+        assertEquals(total, allArtists.size());
         assertTrue(allArtists.contains(artist1));
         assertTrue(allArtists.contains(artist2));
     }

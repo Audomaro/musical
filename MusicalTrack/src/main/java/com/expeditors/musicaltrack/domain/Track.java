@@ -23,9 +23,9 @@ public class Track {
     private MediaType mediaType;
     private static final Faker faker = new Faker();
 
-    public Track(int id, List<Integer> idsArtist) {
+    public Track( List<Integer> idsArtist) {
         this(
-                id,
+                0,
                 faker.funnyName().name(),
                 faker.funnyName().name(),
                 idsArtist,

@@ -1,7 +1,10 @@
 package com.expeditors.musicaltrack.services;
 
 import com.expeditors.musicaltrack.domain.Artist;
+import com.expeditors.musicaltrack.domain.MediaType;
+import com.expeditors.musicaltrack.domain.Track;
 import com.expeditors.musicaltrack.repositories.ArtistRepository;
+import com.expeditors.musicaltrack.repositories.TrackRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -18,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArtistServiceImplTest {
     @Mock
     private ArtistRepository artistRepository;
+
+    @Mock
+    private TrackRepository trackRepository;
 
     @InjectMocks
     private ArtistServiceImpl artistService;
@@ -108,17 +115,31 @@ class ArtistServiceImplTest {
                 new Artist(42, "Jonh D", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
         );
 
-        Mockito.when(artistRepository.getBy(Mockito.any())).thenAnswer(invocation -> {
-            Predicate<Artist> receivedPredicate = invocation.getArgument(0);
-            return artistList.stream()
-                    .filter(receivedPredicate)
-                    .toList();
-        });
+        Mockito.when(artistRepository.getBy(Mockito.any())).thenReturn(artistList);
 
         List<Artist> result = artistService.getArtistByName(artistName);
 
         assertEquals(artistList, result);
 
         Mockito.verify(artistRepository).getBy(Mockito.any());
+    }
+
+    @Test
+    void getTracksByArtist() {
+        int idArtist = 155;
+
+        List<Track> trackList = List.of(
+                new Track(1, "Song A", "Album A", List.of(idArtist,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
+                new Track(2, "Song C", "Album C", List.of(idArtist,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
+                new Track(3, "Song D", "Album D", List.of(idArtist,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg)
+        );
+
+        Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);
+
+        List<Track> result = artistService.getTracksByArtist(idArtist);
+
+        assertEquals(trackList, result);
+
+        Mockito.verify(trackRepository).getBy(Mockito.any());
     }
 }

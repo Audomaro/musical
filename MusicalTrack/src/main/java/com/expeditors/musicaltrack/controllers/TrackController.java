@@ -33,7 +33,7 @@ public class TrackController {
         Track adopter = service.getById(id);
 
         if (adopter == null) {
-            return ResponseEntity.status(HttpStatus.OK).body("No track with id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No track with id: " + id);
         }
 
         return ResponseEntity.ok(adopter);

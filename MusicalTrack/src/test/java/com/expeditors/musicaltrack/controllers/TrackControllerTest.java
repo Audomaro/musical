@@ -244,11 +244,6 @@ class TrackControllerTest {
     }
 
     @Test
-    void getByArtist() throws Exception {
-        // Pendiente
-    }
-
-    @Test
     void getByDuration() throws Exception {
         DurationTrack durationTrack = DurationTrack.shorted;
         int seconds = 200;
@@ -273,6 +268,32 @@ class TrackControllerTest {
                 .andDo(print());
 
         Mockito.verify(trackService).getTrackByDuration(durationTrack, seconds);
+    }
+
+    @Test
+    void getArtistBytrack() throws Exception {
+        int idTrack = 1;
+
+        List<Artist> artists = List.of(
+                new Artist(12, "Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(22, "Jonh O", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(32, "Jonh V", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(42, "Jonh D", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
+        );
+
+        String jsonString = objectMapper.writeValueAsString(artists);
+
+        Mockito.when(trackService.getArtistsByTrack(idTrack)).thenReturn(artists);
+
+        this.mockMvc.perform(
+                        get("/track/artists/" + idTrack)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonString))
+                .andDo(print());
+
+        Mockito.verify(trackService).getArtistsByTrack(idTrack);
     }
 
     @Test
