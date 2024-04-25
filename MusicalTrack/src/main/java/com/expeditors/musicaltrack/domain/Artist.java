@@ -1,12 +1,11 @@
 package com.expeditors.musicaltrack.domain;
 
 import com.github.javafaker.Faker;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Artist {
     private int id;
     private String firstName;
@@ -19,9 +18,9 @@ public class Artist {
     private boolean active;
     private static final Faker faker = new Faker();
 
-    public Artist() {
+    public Artist(int id) {
         this(
-                0,
+                id,
                 faker.name().firstName(),
                 faker.name().lastName(),
                 faker.music().genre(),

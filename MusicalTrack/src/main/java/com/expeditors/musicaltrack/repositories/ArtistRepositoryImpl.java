@@ -51,9 +51,9 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     public List<Artist> getBy(Predicate<Artist> predicate) {
         return
                 this.listData
-                .values()
-                .stream()
-                .filter(predicate)
-                .collect(Collectors.toList());
+                        .values()
+                        .stream()
+                        .filter(predicate)
+                        .collect(Collectors.toList());
     }
 }

@@ -14,9 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class ArtistServiceImplTest {
@@ -49,8 +49,8 @@ class ArtistServiceImplTest {
 
     @Test
     void getById() {
-        Artist artist1 = new Artist(1);
-        Artist artist2 = new Artist(1);
+        Artist artist1 = new Artist();
+        Artist artist2 = new Artist();
 
         Mockito.when(artistRepository.getById(1)).thenReturn(artist1);
         Mockito.when(artistRepository.getById(2)).thenReturn(artist2);
@@ -67,7 +67,7 @@ class ArtistServiceImplTest {
 
     @Test
     void insert() {
-        Artist newArtist = new Artist(1);
+        Artist newArtist = new Artist();
 
         Mockito.when(artistRepository.insert(newArtist)).thenReturn(newArtist);
 
