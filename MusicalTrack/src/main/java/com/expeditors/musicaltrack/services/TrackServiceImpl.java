@@ -4,8 +4,10 @@ import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.DurationTrack;
 import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
+import com.expeditors.musicaltrack.providers.PriceRestClientProvider;
 import com.expeditors.musicaltrack.repositories.ArtistRepository;
 import com.expeditors.musicaltrack.repositories.TrackRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,7 +29,8 @@ public class TrackServiceImpl implements TrackService{
 
     @Override
     public List<Track> getAll() {
-        return this.trackRepository.getAll();
+        List<Track> result = this.trackRepository.getAll();
+        return result;
     }
 
     @Override
