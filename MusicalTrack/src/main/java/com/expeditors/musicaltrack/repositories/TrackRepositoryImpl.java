@@ -1,6 +1,8 @@
 package com.expeditors.musicaltrack.repositories;
 
 import com.expeditors.musicaltrack.domain.Track;
+import com.expeditors.musicaltrack.providers.PriceRestClientProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,6 +14,9 @@ import java.util.stream.Collectors;
 
 @Repository
 public class TrackRepositoryImpl implements TrackRepository {
+
+    private PriceRestClientProvider priceRestClientProvider = new PriceRestClientProvider();
+
     private final Map<Integer, Track> listData;
     private static int nextId = 1;
 

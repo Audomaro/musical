@@ -32,10 +32,10 @@ class ArtistServiceImplTest {
     @Test
     void getAll() {
         List<Artist> artistList = List.of(
-                new Artist(1),
-                new Artist(2),
-                new Artist(3),
-                new Artist(4)
+                new Artist(),
+                new Artist(),
+                new Artist(),
+                new Artist()
         );
 
         Mockito.when(artistRepository.getAll()).thenReturn(artistList);
@@ -49,8 +49,8 @@ class ArtistServiceImplTest {
 
     @Test
     void getById() {
-        Artist artist1 = new Artist(1);
-        Artist artist2 = new Artist(1);
+        Artist artist1 = new Artist();
+        Artist artist2 = new Artist();
 
         Mockito.when(artistRepository.getById(1)).thenReturn(artist1);
         Mockito.when(artistRepository.getById(2)).thenReturn(artist2);
@@ -67,7 +67,7 @@ class ArtistServiceImplTest {
 
     @Test
     void insert() {
-        Artist newArtist = new Artist(1);
+        Artist newArtist = new Artist();
 
         Mockito.when(artistRepository.insert(newArtist)).thenReturn(newArtist);
 
@@ -129,9 +129,9 @@ class ArtistServiceImplTest {
         int idArtist = 155;
 
         List<Track> trackList = List.of(
-                new Track(1, "Song A", "Album A", List.of(idArtist,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3),
-                new Track(2, "Song C", "Album C", List.of(idArtist,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3),
-                new Track(3, "Song D", "Album D", List.of(idArtist,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg)
+                new Track(1, "Song A", "Album A", List.of(idArtist,3,3), LocalDate.of(2022,1,1), 120, MediaType.mp3,0),
+                new Track(2, "Song C", "Album C", List.of(idArtist,62,13), LocalDate.of(2021,1,1), 180, MediaType.mp3,0),
+                new Track(3, "Song D", "Album D", List.of(idArtist,92,1), LocalDate.of(2022,1,1), 60, MediaType.ogg,0)
         );
 
         Mockito.when(trackRepository.getBy(Mockito.any())).thenReturn(trackList);

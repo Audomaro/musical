@@ -36,7 +36,7 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public boolean update(int id, Artist model) {
-        return this.artistRepository.update(id,model);
+        return this.artistRepository.update(id, model);
     }
 
     @Override

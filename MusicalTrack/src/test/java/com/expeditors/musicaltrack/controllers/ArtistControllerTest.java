@@ -3,6 +3,8 @@ package com.expeditors.musicaltrack.controllers;
 import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.Track;
 import com.expeditors.musicaltrack.services.ArtistServiceImpl;
+import com.expeditors.musicaltrack.services.TrackService;
+import com.expeditors.musicaltrack.services.TrackServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -34,14 +37,19 @@ class ArtistControllerTest {
     @MockBean
     private ArtistServiceImpl artistService;
 
+
+    @MockBean
+    private TrackServiceImpl trackService;
+
+
     @Test
     void getAll() throws Exception {
 
         List<Artist> artistList = List.of(
-                new Artist(12, "Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
-                new Artist(22, "Jonh O", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
-                new Artist(32, "Jonh V", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
-                new Artist(42, "Jonh D", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
+                new Artist(1, "Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(2, "Jonh O", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(3, "Jonh V", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true),
+                new Artist(4, "Jonh D", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true)
         );
 
         String jsonString = objectMapper.writeValueAsString(artistList);
@@ -141,8 +149,7 @@ class ArtistControllerTest {
 
     @Test
     void postArtist() throws Exception {
-        Artist artist = new Artist("Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
-        artist.setId(100);
+        Artist artist = new Artist(100,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
 
         String artistJson = objectMapper.writeValueAsString(artist);
 
@@ -161,7 +168,7 @@ class ArtistControllerTest {
 
     @Test
     void putArtist() throws Exception {
-        Artist artist = new Artist(100,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
+        Artist artist = new Artist(1,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
         String artistJson = objectMapper.writeValueAsString(artist);
 
         Mockito.when(artistService.update(artist.getId(), artist)).thenReturn(true);
@@ -179,7 +186,7 @@ class ArtistControllerTest {
 
     @Test
     void putArtistNotFound() throws Exception {
-        Artist artist = new Artist(100,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
+        Artist artist = new Artist(1,"Jonh A", "Doe", "Modify", "MEx", "N/A", "", new String[]{}, true);
         String artistJson = objectMapper.writeValueAsString(artist);
 
         Mockito.when(artistService.update(artist.getId(), artist)).thenReturn(false);
@@ -232,9 +239,9 @@ class ArtistControllerTest {
         int idArtist = 100;
 
         List<Track> tracks = List.of(
-                new Track(1, "Song A", "Album A", List.of(idArtist, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(2, "Song B", "Album B", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3),
-                new Track(3, "Song C", "Album C", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3)
+                new Track(1, "Song A", "Album A", List.of(idArtist, 2), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(2, "Song B", "Album B", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0),
+                new Track(3, "Song C", "Album C", List.of(idArtist, 3), LocalDate.now(), 300, com.expeditors.musicaltrack.domain.MediaType.mp3,0)
         );
 
         String jsonString = objectMapper.writeValueAsString(tracks);

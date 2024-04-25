@@ -4,7 +4,9 @@ import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.DurationTrack;
 import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
+import com.expeditors.musicaltrack.providers.PriceRestClientProvider;
 import com.expeditors.musicaltrack.repositories.ArtistRepository;
+import com.expeditors.musicaltrack.repositories.ArtistRepositoryImpl;
 import com.expeditors.musicaltrack.repositories.TrackRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,26 +15,34 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class TrackServiceImpl implements TrackService{
     private final TrackRepository trackRepository;
-    private final ArtistRepository artistRepository;
+    private final ArtistRepository artistRepository = new ArtistRepositoryImpl();
 
-    public TrackServiceImpl(TrackRepository trackRepository, ArtistRepository artistRepository) {
+    PriceRestClientProvider priceRestClientProvider = new PriceRestClientProvider();
+
+    public TrackServiceImpl(TrackRepository trackRepository) {
         this.trackRepository = trackRepository;
-        this.artistRepository = artistRepository;
     }
 
     @Override
     public List<Track> getAll() {
-        return this.trackRepository.getAll();
+        List<Track> result = this.trackRepository.getAll();
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return result;
     }
 
     @Override
     public Track getById(int id) {
-        return this.trackRepository.getById(id);
+        Track result = this.trackRepository.getById(id);
+
+        priceRestClientProvider.addPrice(result);
+
+        return result;
     }
 
     @Override
@@ -53,13 +63,23 @@ public class TrackServiceImpl implements TrackService{
     @Override
     public List<Track> getTrackByMediaType(MediaType mediaType) {
         Predicate<Track> comparator = track -> track.getMediaType() == mediaType;
-        return this.trackRepository.getBy(comparator);
+
+        List<Track> result = this.trackRepository.getBy(comparator);
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return  result;
     }
 
     @Override
     public List<Track> getTrackByYear(int year) {
         Predicate<Track> comparator = track -> track.getIssueDate().getYear() == year;
-        return this.trackRepository.getBy(comparator);
+
+        List<Track> result = this.trackRepository.getBy(comparator);
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return  result;
     }
 
     @Override
@@ -85,6 +105,10 @@ public class TrackServiceImpl implements TrackService{
             default -> (track -> track.getDuration() == seconds);
         };
 
-        return this.trackRepository.getBy(predicate);
+        List<Track> result = this.trackRepository.getBy(predicate);
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return  result;
     }
 }
