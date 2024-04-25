@@ -3,6 +3,7 @@ package com.expeditors.musicaltrack.controllers;
 import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.Track;
 import com.expeditors.musicaltrack.services.ArtistService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@Tag(name = "Artist Controller", description = "Contains methods related to operations on artists")
 @RestController
 @RequestMapping("/artist")
 public class ArtistController {

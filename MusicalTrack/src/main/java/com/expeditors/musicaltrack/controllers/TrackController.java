@@ -5,6 +5,7 @@ import com.expeditors.musicaltrack.domain.DurationTrack;
 import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
 import com.expeditors.musicaltrack.services.TrackService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@Tag(name = "Track Controller", description = "Contains methods related to operations on track")
 @RestController
 @RequestMapping("/track")
 public class TrackController {

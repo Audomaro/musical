@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Artist {
     private int id;
     private String firstName;
@@ -20,9 +19,9 @@ public class Artist {
     private boolean active;
     private static final Faker faker = new Faker();
 
-    public Artist(int id) {
+    public Artist() {
         this(
-                id,
+                0,
                 faker.name().firstName(),
                 faker.name().lastName(),
                 faker.music().genre(),

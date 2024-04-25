@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Repository
 public class TrackRepositoryImpl implements TrackRepository {
     private final Map<Integer, Track> listData;
-    private static int nextId = 0;
+    private static int nextId = 1;
 
     public TrackRepositoryImpl() {
         this.listData = new ConcurrentHashMap<>();
