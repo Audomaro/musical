@@ -4,6 +4,7 @@ import com.expeditors.musicaltrack.domain.Artist;
 import com.expeditors.musicaltrack.domain.DurationTrack;
 import com.expeditors.musicaltrack.domain.MediaType;
 import com.expeditors.musicaltrack.domain.Track;
+import com.expeditors.musicaltrack.providers.PriceRestClientProvider;
 import com.expeditors.musicaltrack.repositories.ArtistRepository;
 import com.expeditors.musicaltrack.repositories.TrackRepository;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class TrackServiceImplTest {
 
     @Mock
     private ArtistRepository artistRepository;
+
+    @Mock
+    private PriceRestClientProvider priceRestClientProviderMock;
 
     @InjectMocks
     private TrackServiceImpl trackService;

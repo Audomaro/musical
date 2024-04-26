@@ -21,26 +21,36 @@ import java.util.stream.Collectors;
 public class TrackServiceImpl implements TrackService{
     private final TrackRepository trackRepository;
     private final ArtistRepository artistRepository;
+    private final PriceRestClientProvider priceRestClientProvider;
 
-    public TrackServiceImpl(TrackRepository trackRepository, ArtistRepository artistRepository) {
+    public TrackServiceImpl(TrackRepository trackRepository, ArtistRepository artistRepository, PriceRestClientProvider priceRestClientProvider) {
         this.trackRepository = trackRepository;
         this.artistRepository = artistRepository;
+        this.priceRestClientProvider = priceRestClientProvider;
     }
 
     @Override
     public List<Track> getAll() {
         List<Track> result = this.trackRepository.getAll();
+
+        result.forEach(priceRestClientProvider::addPrice);
+
         return result;
     }
 
     @Override
     public Track getById(int id) {
-        return this.trackRepository.getById(id);
+        Track result = this.trackRepository.getById(id);
+        priceRestClientProvider.addPrice(result);
+        return result;
     }
 
     @Override
     public Track insert(Track model) {
-        return this.trackRepository.insert(model);
+        Track result =  this.trackRepository.insert(model);
+        priceRestClientProvider.addPrice(result);
+        return result;
+
     }
 
     @Override
@@ -55,14 +65,24 @@ public class TrackServiceImpl implements TrackService{
 
     @Override
     public List<Track> getTrackByMediaType(MediaType mediaType) {
-        Predicate<Track> comparator = track -> track.getMediaType() == mediaType;
-        return this.trackRepository.getBy(comparator);
+        Predicate<Track> predicate = track -> track.getMediaType() == mediaType;
+
+        List<Track> result = this.trackRepository.getBy(predicate);
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return result;
     }
 
     @Override
     public List<Track> getTrackByYear(int year) {
-        Predicate<Track> comparator = track -> track.getIssueDate().getYear() == year;
-        return this.trackRepository.getBy(comparator);
+        Predicate<Track> predicate = track -> track.getIssueDate().getYear() == year;
+
+        List<Track> result = this.trackRepository.getBy(predicate);
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return result;
     }
 
     @Override
@@ -88,6 +108,10 @@ public class TrackServiceImpl implements TrackService{
             default -> (track -> track.getDuration() == seconds);
         };
 
-        return this.trackRepository.getBy(predicate);
+        List<Track> result = this.trackRepository.getBy(predicate);
+
+        result.forEach(priceRestClientProvider::addPrice);
+
+        return result;
     }
 }

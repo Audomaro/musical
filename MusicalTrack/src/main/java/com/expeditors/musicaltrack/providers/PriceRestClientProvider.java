@@ -3,10 +3,10 @@ package com.expeditors.musicaltrack.providers;
 import com.expeditors.musicaltrack.domain.Track;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-@Component
+@Service
 public class PriceRestClientProvider implements PriceProvider {
 
     private final String rootUrl;
